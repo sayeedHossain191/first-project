@@ -1,30 +1,21 @@
 import { Schema, model, connect } from 'mongoose';
-import { Student } from './student/student.interface';
+import { Guardian, LocalGuardian, Student, userName } from './student/student.interface';
 
-const studentSchema=new Schema<Student>({
-    id:{type:String},
-    name:{
-        firstName:{
-            type:String,
-            required:true
-        },
-        middleName:{
-            type:String
-        },
-        lastName:{
-            type:String,
-            required:true
-        },
+const userNameSchema=new Schema<userName>({
+    firstName:{
+        type:String,
+        required:true
     },
-    gender:["male","female"],
-    dateOfBirth:{type:String},
-email:{type:String,required:true},
-contactNumber:{type:String,required:true},
-emergencyContact:{type:String,required:true},
-bloodGroup:["A+","A-"],
-presentAddress:{type:String,required:true},
-permanentAddress:{type:String,required:true},
-guardian:{
+    middleName:{
+        type:String
+    },
+    lastName:{
+        type:String,
+        required:true
+    },
+})
+
+const guardianSchema=new Schema<Guardian>({
     fatherName:{
         type:String,
         required:true
@@ -41,8 +32,9 @@ guardian:{
         type:String,
         required:true
     }
-},
-localGuardian:{
+})
+
+const localGuardianSchema=new Schema<LocalGuardian>({
     name:{
         type:String,
         required:true
@@ -59,8 +51,24 @@ localGuardian:{
         type:String,
         required:true
     }
-},
+})
+
+const studentSchema=new Schema<Student>({
+id:{type:String},
+name:userNameSchema,
+gender:["male","female"],
+dateOfBirth:{type:String},
+email:{type:String,required:true},
+contactNumber:{type:String,required:true},
+emergencyContact:{type:String,required:true},
+bloodGroup:["A+","A-"],
+presentAddress:{type:String,required:true},
+permanentAddress:{type:String,required:true},
+guardian:guardianSchema,
+localGuardian:localGuardianSchema,
 profileImage:{type:String},
 isActive:["active","inactive"]
 
 })
+
+const Student=model<Student>('Student',studentSchema)
