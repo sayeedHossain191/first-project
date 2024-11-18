@@ -4,14 +4,14 @@ import { Guardian, LocalGuardian, Student, userName } from './student/student.in
 const userNameSchema=new Schema<userName>({
     firstName:{
         type:String,
-        required:true
+        required:[true,"first name is required"]
     },
     middleName:{
         type:String
     },
     lastName:{
         type:String,
-        required:true
+        required:[true,"last name is required"]
     },
 })
 
@@ -53,22 +53,53 @@ const localGuardianSchema=new Schema<LocalGuardian>({
     }
 })
 
+
 const studentSchema=new Schema<Student>({
-id:{type:String},
-name:userNameSchema,
-gender:["male","female"],
+id:{type:String,
+    required:true,
+    unique:true
+},
+name:{
+    type:userNameSchema,
+    required:true
+},
+gender:{
+    type:String,
+    enum:{
+        values:["male","female","others"],
+        message:"{VALUE} is not valid"
+    },
+    required:true
+},
 dateOfBirth:{type:String},
 email:{type:String,required:true},
 contactNumber:{type:String,required:true},
 emergencyContact:{type:String,required:true},
-bloodGroup:["A+","A-"],
-presentAddress:{type:String,required:true},
-permanentAddress:{type:String,required:true},
-guardian:guardianSchema,
-localGuardian:localGuardianSchema,
+bloodGroup:{
+    type:String,
+    enum:["A+","A-"]
+},
+presentAddress:{
+    type:String,
+    required:true},
+permanentAddress:{
+    type:String,
+    required:true},
+guardian:{
+    type:guardianSchema,
+    required:true
+},
+localGuardian:{
+    type:localGuardianSchema,
+    required:true
+},
 profileImage:{type:String},
-isActive:["active","inactive"]
+isActive:{
+    type:String,
+    enum:["active","blocked"],
+    default:"active"
+}
 
 })
 
-const Student=model<Student>('Student',studentSchema)
+export const StudentModel=model<Student>('Student',studentSchema)
