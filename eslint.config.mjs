@@ -6,7 +6,10 @@ import tseslint from "typescript-eslint";
 /** @type {import('eslint').Linter.Config[]} */
 export default [
   { files: ["**/*.{js,mjs,cjs,ts}"] },
-  { languageOptions: { globals: globals.browser } },
+  { languageOptions: { globals: {
+    ...globals.browser, // Include browser globals
+    process: "readonly", // Node.js global
+  }, } },
   pluginJs.configs.recommended,
   ...tseslint.configs.recommended,
 
@@ -19,9 +22,7 @@ export default [
       "no-console": "warn",
       "no-undef": "error"
     },
-    "globals": {
-      "process": "readonly"
-    }
+    
   },
 
 ];

@@ -1,4 +1,4 @@
-import { Schema, model, connect } from 'mongoose';
+import { Schema, model } from 'mongoose';
 import { Guardian, LocalGuardian, Student, userName } from './student/student.interface';
 
 const userNameSchema=new Schema<userName>({
@@ -72,7 +72,7 @@ gender:{
     required:true
 },
 dateOfBirth:{type:String},
-email:{type:String,required:true},
+email:{type:String,required:true, unique:true},
 contactNumber:{type:String,required:true},
 emergencyContact:{type:String,required:true},
 bloodGroup:{
